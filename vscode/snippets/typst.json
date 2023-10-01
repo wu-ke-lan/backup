@@ -1,0 +1,127 @@
+{
+  "ind": {
+    "prefix": "ind",
+    "description": "",
+    "body": [
+      "#h(2em)"
+    ]
+  },
+  "t6": {
+    "prefix": "t6",
+    "description": "",
+    "body": [
+      "#figure(",
+      "  table(",
+      "    columns: 6,",
+      "    align: (col, row) => (center,center,center,center,center,center).at(col),",
+      "    inset: 6pt,",
+      "    [], [], [], [], [], [],",
+      "    [], [], [], [], [], [],",
+      "    [], [], [], [], [], [],",
+      "    [], [], [], [], [], [],",
+      "  )",
+      "  caption: [],",
+      "  supplement: [表]",
+      ")",
+      ""
+    ]
+  },
+  "t3": {
+    "prefix": "t3",
+    "description": "",
+    "body": [
+      "#figure(",
+      "  table(",
+      "    columns: 3,",
+      "    align: (col, row) => (center,center,center,).at(col),",
+      "    inset: 6pt,",
+      "    [], [], [],",
+      "    [], [], [],",
+      "    [], [], [],",
+      "    [], [], [],",
+      "  )",
+      "  caption: [],",
+      "  supplement: [表]",
+      ")",
+      ""
+    ]
+  },
+  "t4": {
+    "prefix": "t4",
+    "description": "",
+    "body": [
+      "#figure(",
+      "  table(",
+      "    columns: 4,",
+      "    align: (col, row) => (center,center,center,center).at(col),",
+      "    inset: 6pt,",
+      "    [], [], [], [],",
+      "    [], [], [], [],",
+      "    [], [], [], [],",
+      "    [], [], [], [],",
+      "  )",
+      "  caption: [],",
+      "  supplement: [表]",
+      ")",
+      ""
+    ]
+  },
+  "t5": {
+    "prefix": "t5",
+    "description": "",
+    "body": [
+      "#figure(",
+      "  table(",
+      "    columns: 5,",
+      "    align: (col, row) => (center,center,center,center,center).at(col),",
+      "    inset: 6pt,",
+      "    [], [], [], [], [],",
+      "    [], [], [], [], [],",
+      "    [], [], [], [], [],",
+      "    [], [], [], [], [],",
+      "  )",
+      "  caption: [],",
+      "  supplement: [表]",
+      ")",
+      ""
+    ]
+  },
+  "cpy": {
+    "prefix": "cpy",
+    "description": "",
+    "body": [
+      "#let code1 = read(\"python\")",
+      "#raw(code1, lang: \"python\")",
+      ""
+    ]
+  },
+  "cjl": {
+    "prefix": "cjl",
+    "description": "",
+    "body": [
+      "#let code1 = read(\"julia\")",
+      "#raw(code1, lang: \"julia\")",
+      ""
+    ]
+  },
+  "def": {
+    "prefix": "def",
+    "description": "",
+    "body": [
+      "#definition[",
+      "",
+      "]",
+      ""
+    ]
+  },
+  "eneq": {
+    "prefix": "eneq",
+    "description": "",
+    "body": [
+      "#set math.equation(numbering: \"(1)\", supplement: [式])",
+      "",
+      "#set math.equation(numbering: none)",
+      ""
+    ]
+  }
+}
