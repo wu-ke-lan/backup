@@ -40,9 +40,11 @@ export EDITOR_T='vi'
 
 OX_PLUGINS=(
     oxpc
-    oxpg
     oxpes
     oxpfm
+    oxpg
+    oxpjn
+    oxprs
     oxpvs
     oxpwr
 )
@@ -158,21 +160,23 @@ upp() {
 # # set the length of key <= 3
 declare -A OX_CONDA_ENV=(
     [b]="base"
-    # [k]="kaggle"
+    [m]="music"
 )
 
 # # conda env stats with bkce, and should be consistent with OX_CONDA_ENV
 OX_OXIDE[bkceb]=${OX_BACKUP}/conda/conda-base.txt
+OX_OXIDE[bkcem]=${OX_BACKUP}/conda/conda-music.txt
 
 alias b="ceq && ceat b; clear"
+alias m="ceq && ceat m; clear"
 alias q="ceq"
 
 ##########################################################
 # others settings
 ##########################################################
 
-# OX_OXIDE[bkesb]=${OX_BACKUP}/espanso/match/base.yml
-# OX_OXIDE[bkvs]=${OX_BACKUP}/vscode/settings.jsonc
+OX_OXIDE[bkesb]=${OX_BACKUP}/espanso/match/base.yml
+OX_OXIDE[bkvs]=${OX_BACKUP}/vscode/settings.jsonc
 
 ##########################################################
 # common aliases
@@ -198,6 +202,7 @@ alias zz="z -"
 
 # personal
 alias bb="btm -b"
+alias -g wl="| wc -l"
 
 ##########################################################
 # shell
