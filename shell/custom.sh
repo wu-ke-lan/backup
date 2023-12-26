@@ -22,21 +22,22 @@ export EDITOR_T='vi'
 
 # oxpg: ox-git
 # oxpc: ox-conda
-# oxpcn: ox-conan
-# oxphx: ox-helix
-# oxpjl: ox-julia
-# oxpnj: ox-nodejs
-# oxprs: ox-rust
-# oxpzj: ox-zellij
 # oxpbw: ox-bitwarden
+# oxpcn: ox-conan
 # oxpct: ox-container
 # oxpes: ox-espanso
+# oxpfm: ox-format
+# oxpjl: ox-julia
 # oxpjn: ox-jupyter
+# oxpnj: ox-nodejs
+# oxpnt: ox-notes
+# oxppu: ox-pueue
+# oxprb: ox-ruby
+# oxprs: ox-rust
 # oxptl: ox-texlive
 # oxpvs: ox-vscode
-# oxpfm: ox-format
 # oxpwr: ox-weather
-# oxpwr: ox-notes
+# oxpzj: ox-zellij
 
 OX_PLUGINS=(
     oxpc
@@ -53,20 +54,12 @@ OX_PLUGINS=(
 # select software configuration objects
 ##########################################################
 
-# options: brew, conda, vscode, julia, texlive, node
-declare -a OX_UPDATE_PROG
-export OX_UPDATE_PROG=(brew)
-
-declare -a OX_BACKUP_PROG
-export OX_BACKUP_PROG=(brew)
-
 # backup file path
 export OX_BACKUP=${HOME}/Documents/backup
 
 # shell backups
 OX_OXIDE[bkox]=${OX_BACKUP}/shell/custom.sh
 # OX_OXIDE[bkvi]=${OX_BACKUP}/shell/.vimrc
-# OX_OXIDE[bkpx]=${OX_BACKUP}/verge.yaml
 
 # system file
 OX_ELEMENT[wz]=${HOME}/.config/wezterm/wezterm.lua
@@ -77,58 +70,31 @@ OX_OXIDE[bkwz]=${OX_BACKUP}/terminal/wezterm.lua
 # OX_OXIDE[bkal]=${OX_BACKUP}/terminal/alacritty.yml
 
 ##########################################################
-# register proxy ports
+# proxy and mirror settings
 ##########################################################
 
-# c: clash, v: v2ray
+# to use proxy and mirrors for faster download, don't forget to add `oxpnw` in `OX_PLUGINS`
+
+# c: clash, m: clash-meta, v: v2ray
 declare -A OX_PROXY=(
     [c]=7890
+    [m]=7897
     [v]=1080
 )
 
-OX_ELEMENT[cv]="${HOME}/.config/clash-verge/verge.yaml"
-OX_OXIDE[bkcv]="${OX_BACKUP}/app/verge.yaml"
-
-##########################################################
-# select export and import settings
-##########################################################
-
-# files to be exported to backup folder
-# ox: custom.sh of Oxidizer
-# rs: cargo's env
-# pu: pueue's config.yml
-# pua: pueue's aliases.yml
-# jl: julia's startup.jl
-# vs: vscode's settings.json
-# vsk: vscode's keybindings.json
-# vss_: vscode's snippets folder
-declare -a OX_EXPORT_FILE
-export OX_EXPORT_FILE=(ox)
-
-# files to be import from backup folder
-declare -a OX_IMPORT_FILE
-export OX_IMPORT_FILE=(ox)
-
-##########################################################
-# git settings
-##########################################################
-
-# backup files
-OX_OXIDE[bkg]=${OX_BACKUP}/.gitconfig
-# OX_OXIDE[bkgi]=${OX_BACKUP}/git/.gitignore
+# use `mrb [key]` for brew mirror, use `mrbq` for quit brew mirror
+# declare -A MIRRORS=(
+#     [bts]="mirrors.tuna.tsinghua.edu.cn/git/homebrew"
+#     [bzk]="mirrors.ustc.edu.cn/git/homebrew"
+# )
 
 ##########################################################
 # brew settings
 ##########################################################
 
+export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_ENV_HINTS=1
-export HOMEBREW_CLEANUP_MAX_AGE_DAYS="7"
-
-# brew mirrors for faster download, use `bmr` to use
-# declare -A HOMEBREW_MIRROR=(
-#     [ts]="mirrors.tuna.tsinghua.edu.cn/git/homebrew"
-#     [zk]="mirrors.ustc.edu.cn/git/homebrew"
-# )
+export HOMEBREW_CLEANUP_MAX_AGE_DAYS="3"
 
 # predefined brew services
 # set the length of key <= 3
@@ -175,7 +141,11 @@ alias q="ceq"
 # others settings
 ##########################################################
 
+# git
+OX_OXIDE[bkg]=${OX_BACKUP}/.gitconfig
+OX_OXIDE[bkgi]=${OX_BACKUP}/git/.gitignore
 OX_OXIDE[bkesb]=${OX_BACKUP}/espanso/match/base.yml
+# vscode
 OX_OXIDE[bkvs]=${OX_BACKUP}/vscode/settings.jsonc
 
 ##########################################################
@@ -188,12 +158,11 @@ alias ls="lsd"
 alias ll="ls -l"
 alias la="ls -a"
 alias lla="ls -la"
+alias du="dust"
 alias e="echo"
 alias rr="rm -rf"
 alias c="clear"
 alias own="sudo chown -R $(whoami)"
-alias shell="echo ${SHELL}"
-alias shells="cat ${SHELLS}"
 
 # tools
 alias man="tldr"
@@ -208,26 +177,14 @@ alias -g wl="| wc -l"
 # shell
 ##########################################################
 
-# test profile loading time
-tt() {
-    case ${SHELL} in
-    *zsh)
-        hyperfine --warmup 3 --shell zsh "source ${OX_ELEMENT[zs]}"
-        ;;
-    *bash)
-        hyperfine --warmup 3 --shell bash "source ${OX_ELEMENT[bs]}"
-        ;;
-    esac
-}
-
 # clean history
 ccc() {
     case ${SHELL} in
     *zsh)
-        local HISTSIZE=0 && history -p && reset && echo >${OX_ELEMENT[zshst]}
+        local HISTSIZE=0 && history -p && reset && echo >"${OX_ELEMENT[zshst]}"
         ;;
     *bash)
-        local HISTSIZE=0 && history -c && reset && echo >${OX_ELEMENT[bshst]}
+        local HISTSIZE=0 && history -c && reset && echo >"${OX_ELEMENT[bshst]}"
         ;;
     esac
 }
@@ -242,12 +199,24 @@ case ${SHELL} in
     ;;
 *bash)
     # turn case sensitivity off
-    if [ ! -e ${HOME}/.inputrc ]; then
-        echo '$include /etc/inputrc' >${HOME}/.inputrc
+    if [ ! -e "${HOME}"/.inputrc ]; then
+        echo '$include /etc/inputrc' >"${HOME}"/.inputrc
     fi
-    echo 'set completion-ignore-case On' >>${HOME}/.inputrc
+    echo 'set completion-ignore-case On' >>"${HOME}"/.inputrc
     ;;
 esac
+
+# test profile loading time
+tt() {
+    case ${SHELL} in
+    *zsh)
+        hyperfine --warmup 3 --shell zsh "source ${OX_ELEMENT[zs]}"
+        ;;
+    *bash)
+        hyperfine --warmup 3 --shell bash "source ${OX_ELEMENT[bs]}"
+        ;;
+    esac
+}
 
 ##########################################################
 # startup commands
