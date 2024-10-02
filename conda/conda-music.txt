@@ -1,4 +1,3 @@
 conda-tree
-ghp-import
 jupyter-book
-mamba
+plotnine
